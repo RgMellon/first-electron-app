@@ -5,8 +5,17 @@ import PropTypes from 'prop-types';
 
 import { Wrapper } from './styles';
 
+import NavMenu from '../../../Components/NavMenu';
+import Menu from '../../../Components/Menu';
+
 export default function DefaultLayout({ children }) {
-  return <Wrapper>{children}</Wrapper>;
+  return (
+    <>
+      <NavMenu />
+      <Menu />
+      <Wrapper>{children}</Wrapper>
+    </>
+  );
 }
 
 DefaultLayout.prototypes = {
