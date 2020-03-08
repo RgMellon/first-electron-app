@@ -74,7 +74,7 @@ export const ScrollBar = styled(PerfectScrollbar)`
   overflow: auto;
 }`;
 
-export const Notification = styled.div`
+export const PetNotification = styled.div`
   display: flex;
   align-items: center;
 

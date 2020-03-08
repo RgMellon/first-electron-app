@@ -1,4 +1,3 @@
-import {Alert} from 'react-native';
 import produce from 'immer';
 
 const INITIAL_STATE = {

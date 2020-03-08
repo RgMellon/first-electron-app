@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import Notification from '../../Components/Notification';
+import Notification from '../../Components/NotificationMenu';
 
 import { Container, WrapperMenu, MenuLeft, MenuRight } from './styles';
 

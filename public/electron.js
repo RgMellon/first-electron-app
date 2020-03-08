@@ -9,7 +9,7 @@ const exeName = path.basename(process.execPath);
 function createWindow() {
   // Cria uma janela de navegação.
   const win = new BrowserWindow({
-    width: 1024,
+    width: 1200,
     height: 700,
     webPreferences: {
       nodeIntegration: true,

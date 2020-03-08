@@ -1,34 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { MdNotifications } from 'react-icons/md';
+import { useSelector, useDispatch } from 'react-redux';
+
+import socketio from 'socket.io-client';
 
 import {
   Container,
   Badge,
   NotificationList,
   ScrollBar,
-  Notification,
+  PetNotification,
   ContentInfo,
 } from './styles';
 
-// import api from '~/services/api';
+import { getLastAppointment } from '../../store/modules/appointment/actions';
 
 export default function NotificationMenu() {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   async function getNotifications() {
-  //     try {
-  //       const response = await api.get('/notifications/takes');
-  //       setData(response.data.takes);
-  //     } catch (e) {
-  //       console.tron.log(e);
-  //     }
-  //   }
+  const { profile } = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
-  //   getNotifications();
-  // }, []);
+  const socket = useMemo(() => {
+    if (profile) {
+      return socketio('https://pedypet.com', {
+        query: {
+          petshop_id: profile.id,
+        },
+      });
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (profile) {
+      socket.on('notification', notification => {
+        dispatch(getLastAppointment(profile.id));
+        setData([notification]);
+      });
+    }
+  }, [socket, data]);
 
   function handleVisible() {
     setVisible(!visible);
@@ -45,13 +57,13 @@ export default function NotificationMenu() {
         <NotificationList visible={visible}>
           <ScrollBar>
             {data.map(item => (
-              <Notification>
+              <PetNotification>
                 <img src={item.image} alt="" />
                 <ContentInfo>
                   <p> {item.title}</p>
                   <span> {item.date}</span>
                 </ContentInfo>
-              </Notification>
+              </PetNotification>
             ))}
           </ScrollBar>
         </NotificationList>

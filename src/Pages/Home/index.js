@@ -20,6 +20,8 @@ import pt from 'date-fns/locale/pt-BR';
 
 import api from '../../services/api';
 
+import NewAppointment from '../../Components/NewAppointment';
+
 export default function Home() {
   const [date, setDate] = useState(new Date());
   const [listAppointments, setListAppointments] = useState([]);
@@ -30,6 +32,7 @@ export default function Home() {
   );
 
   const { profile } = useSelector(state => state.user);
+  const { lastAppointment } = useSelector(state => state.appointment);
 
   useEffect(() => {
     getItemsByDate(new Date());
@@ -72,6 +75,8 @@ export default function Home() {
 
   return (
     <Container>
+      {lastAppointment && <NewAppointment />}
+
       <Content>
         <header>
           <button type="button" onClick={handlePrevDays}>

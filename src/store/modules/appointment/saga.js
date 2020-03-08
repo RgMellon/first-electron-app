@@ -1,33 +1,33 @@
-import {takeLatest, call, put, all} from 'redux-saga/effects';
+import { takeLatest, call, put, all } from 'redux-saga/effects';
 
-import {format, parseISO} from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 
-import {Alert} from 'react-native';
+import { toast } from 'react-toastify';
 
-import api from '~/services/api';
+import api from '../../../services/api';
 
-import {setNotificationSucces, setAppointmentsByDateSuccess} from './actions';
+import { setNotificationSucces, setAppointmentsByDateSuccess } from './actions';
 
-export function* getLastAppointment({payload}) {
-  const {petshopId} = payload;
+export function* getLastAppointment({ payload }) {
+  const { petshopId } = payload;
 
   if (!petshopId) return;
 
   try {
     const response = yield call(api.get, `/appointments/${petshopId}`);
 
-    const {appointment} = response.data;
+    const { appointment } = response.data;
 
     yield put(setNotificationSucces(appointment));
   } catch (e) {
-    Alert.alert('Ops, algo de errado ocorreu appointment');
+    toast.error('Ops, algo de errado ocorreu appointment');
     // yield put(signFail());
   }
 }
 
-export function* getAppointmentsByDate({payload}) {
-  const {petshopId, date, status} = payload;
+export function* getAppointmentsByDate({ payload }) {
+  const { petshopId, date, status } = payload;
   try {
     if (petshopId) {
       const response = yield call(api.get, `/dates/appointments/${petshopId}`, {
@@ -59,11 +59,11 @@ export function* getAppointmentsByDate({payload}) {
       };
 
       yield put(
-        setAppointmentsByDateSuccess(newAppointments, countAppointments),
+        setAppointmentsByDateSuccess(newAppointments, countAppointments)
       );
     }
   } catch (e) {
-    Alert.alert('Ops, algo de errado ocorreu appointmentsByDate');
+    toast.error('Ops, algo de errado ocorreu appointmentsByDate');
   }
 }
 
@@ -71,6 +71,6 @@ export default all([
   takeLatest('@appointment/REQUEST_LAST_APPOINTMENT', getLastAppointment),
   takeLatest(
     '@appointment/APPOINTMENTS_BY_DATE_REQUEST',
-    getAppointmentsByDate,
+    getAppointmentsByDate
   ),
 ]);
