@@ -3,7 +3,7 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 
 const appFolder = path.dirname(process.execPath);
-const updateExe = path.resolve(appFolder, '..', 'Update.exe');
+
 const exeName = path.basename(process.execPath);
 
 function createWindow() {
@@ -51,13 +51,9 @@ app.on('activate', () => {
 
 app.setLoginItemSettings({
   openAtLogin: true,
-  path: updateExe,
-  args: [
-    '--processStart',
-    `"${exeName}"`,
-    '--process-start-args',
-    `"--hidden"`,
-  ],
+  path: process.execPath,
+  // eslint-disable-next-line no-template-curly-in-string
+  args: ['--processStart', `${exeName}`, '--process-start-args', '--hidden'],
 });
 
 // In this file you can include the rest of your app's specific main process
