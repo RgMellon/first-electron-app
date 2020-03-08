@@ -1,5 +1,7 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 
+import { toast } from 'react-toastify';
+
 // import {Alert} from 'react-native';
 
 import api from '../../../services/api';
@@ -23,12 +25,13 @@ export function* signIn({ payload }) {
 
     yield put(signSuccess(userWithToken));
   } catch (e) {
-    // Alert.alert('alou');
     if (e.response.status === 401) {
-      // Alert.alert('Usuario ou senha incorretos');
+      toast.error('email ou password incorreto');
       yield put(signFail());
       return;
     }
+
+    toast.error('Ops, algo deu errado');
 
     // Alert.alert('erro ao fazer login, tente mais tarde');
     yield put(signFail());

@@ -3,14 +3,16 @@ import { Switch } from 'react-router-dom';
 import Route from './Route';
 
 import SigIn from '../Pages/SigIn';
+import Dashboard from '../Pages/Home';
 
 export default function Routes() {
   return (
     <Switch>
       <Route path="/" exact component={SigIn} />
       {/* <Route path="/register" component={SignUp} /> */}
-      {/* 
+
       <Route path="/dashboard" component={Dashboard} isPrivate />
+      {/* 
       <Route path="/profile" component={Profile} isPrivate /> */}
     </Switch>
   );

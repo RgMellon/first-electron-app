@@ -12,8 +12,8 @@ export default function SigIn() {
   const dispatch = useDispatch();
 
   function handleSubmit(data) {
-    console.log(data);
-    dispatch(sigInRequest(data));
+    const { email, password } = data;
+    dispatch(sigInRequest(email, password));
     // { email: 'test@example.com', password: '123456' }
   }
 

@@ -16,7 +16,7 @@ export default function auth(state = INITIAL_STATE, action) {
 
       // @auth/SIGN_SUCCESS
       case '@auth/SIGN_SUCCESS': {
-        const {user} = action.payload;
+        const { user } = action.payload;
         draft.token = user.token;
         draft.signed = true;
         draft.loading = false;
