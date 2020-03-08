@@ -14,7 +14,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
-    frame: false,
+    // frame: false,
   });
 
   // and load the index.html of the app.
@@ -25,7 +25,7 @@ function createWindow() {
   );
 
   // win.setMenu(null);
-  win.removeMenu();
+  // win.removeMenu();
   // Menu.setApplicationMenu(null);
   win.setMenuBarVisibility(false);
 
