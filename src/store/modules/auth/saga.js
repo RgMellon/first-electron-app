@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 // import {Alert} from 'react-native';
 
 import api from '../../../services/api';
+import history from '../../../services/history';
 
 import { signSuccess, signFail, signOut } from './actions';
 
@@ -24,6 +25,7 @@ export function* signIn({ payload }) {
     api.defaults.headers.Authorization = `Bearer ${userWithToken.token}`;
 
     yield put(signSuccess(userWithToken));
+    history.push('/dashboard');
   } catch (e) {
     if (e.response.status === 401) {
       toast.error('email ou password incorreto');
@@ -74,14 +76,14 @@ export function setToken({ payload }) {
 }
 
 export function signOutApp() {
-  signOut();
+  history.push('/');
 }
 
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
-  takeLatest('@auth/SIGN_OUT', signOut),
+  takeLatest('@auth/SIGN_OUT', signOutApp),
 ]);
 
 // @auth/SIGN_IN_REQUEST

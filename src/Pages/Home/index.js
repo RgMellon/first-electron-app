@@ -1,7 +1,21 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import { signOut } from '../../store/modules/auth/actions';
+import { useDispatch } from 'react-redux';
 
 export default function Home() {
-  return <h1>Sou a home, yeah</h1>;
+  const dispatch = useDispatch();
+
+  function handleSignOut() {
+    dispatch(signOut());
+  }
+
+  return (
+    <div>
+      <h1>Bisso maluco</h1>
+      <button type="button" onClick={handleSignOut}>
+        Sair Vazado
+      </button>
+    </div>
+  );
 }
