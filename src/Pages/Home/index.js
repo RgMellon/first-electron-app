@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { Container, Content } from './styles';
+import { Container, Content, Item, Left, Right, Title, Owner } from './styles';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 import {
@@ -32,31 +32,42 @@ export default function Home() {
   const { profile } = useSelector(state => state.user);
 
   useEffect(() => {
-    getItemsByDate();
+    getItemsByDate(new Date());
   }, []);
 
-  async function getItemsByDate() {
-    // console.tron.log(user.id);
+  async function getItemsByDate(nDate) {
     const response = await api.get(`/dates/appointments/${profile.id}`, {
       params: {
-        date,
+        date: nDate,
         page: 1,
         status: 0,
       },
     });
 
     const { appointments } = response.data;
-    setListAppointments(appointments);
+
+    const newData = appointments.map(item => ({
+      ...item,
+      formatedDate: format(parseISO(item.date), "d 'de' MMM 'ás' H:mm aa ", {
+        locale: pt,
+      }),
+    }));
+
+    setListAppointments(newData);
   }
 
   async function handlePrevDays() {
-    await setDate(subDays(date, 1));
-    getItemsByDate();
+    const sub = subDays(date, 1);
+    await setDate(sub);
+
+    getItemsByDate(sub);
   }
 
   async function handleNextDays() {
-    await setDate(addDays(date, 1));
-    getItemsByDate();
+    const add = addDays(date, 1);
+    await setDate(add);
+    // await setDate(addDays(date, 1));
+    getItemsByDate(add);
   }
 
   return (
@@ -76,7 +87,26 @@ export default function Home() {
       {listAppointments.length > 0 && (
         <ul>
           {listAppointments.map(item => (
-            <li></li>
+            <Item>
+              <li>
+                <Left>
+                  <div>
+                    <img src={item.pets.url} alt="" />
+                  </div>
+                </Left>
+                <Right>
+                  <h4> {item.formatedDate}</h4>
+
+                  <Title> {item.procedure.title} </Title>
+
+                  <Owner>
+                    <b>Dono </b>
+
+                    <p> {item.user.name}</p>
+                  </Owner>
+                </Right>
+              </li>
+            </Item>
           ))}
         </ul>
       )}
