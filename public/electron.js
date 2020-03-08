@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -14,6 +14,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    frame: false,
   });
 
   // and load the index.html of the app.
@@ -22,6 +23,11 @@ function createWindow() {
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
+
+  // win.setMenu(null);
+  win.removeMenu();
+  // Menu.setApplicationMenu(null);
+  win.setMenuBarVisibility(false);
 
   // Open the DevTools.
   // win.webContents.openDevTools();
@@ -56,5 +62,6 @@ app.setLoginItemSettings({
   args: ['--processStart', `${exeName}`, '--process-start-args', '--hidden'],
 });
 
+Menu.setApplicationMenu(false);
 // In this file you can include the rest of your app's specific main process
 // code. Você também pode colocar eles em arquivos separados e requeridos-as aqui.
