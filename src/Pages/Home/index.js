@@ -1,9 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 
-import { signOut } from '../../store/modules/auth/actions';
-import { useDispatch } from 'react-redux';
-import { Container, Content } from './styles';
+import { useSelector } from 'react-redux';
 
+import { Container, Content } from './styles';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 import {
@@ -17,22 +16,47 @@ import {
   isEqual,
   parseISO,
 } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
+
+import api from '../../services/api';
 
 export default function Home() {
   const [date, setDate] = useState(new Date());
+  const [listAppointments, setListAppointments] = useState([]);
 
-  const dispatch = useDispatch();
+  const dateFormated = useMemo(
+    () => format(date, "d 'de' MMM", { locale: pt }),
+    [date]
+  );
 
-  function handleSignOut() {
-    dispatch(signOut());
+  const { profile } = useSelector(state => state.user);
+
+  useEffect(() => {
+    getItemsByDate();
+  }, []);
+
+  async function getItemsByDate() {
+    // console.tron.log(user.id);
+    const response = await api.get(`/dates/appointments/${profile.id}`, {
+      params: {
+        date,
+        page: 1,
+        status: 0,
+      },
+    });
+
+    const { appointments } = response.data;
+    setListAppointments(appointments);
   }
 
-  function handlePrevDays() {
-    setDate(subDays(date, 1));
+  async function handlePrevDays() {
+    await setDate(subDays(date, 1));
+    getItemsByDate();
   }
 
-  function handleNextDays() {
-    setDate(addDays(date, 1));
+  async function handleNextDays() {
+    await setDate(addDays(date, 1));
+    getItemsByDate();
   }
 
   return (
@@ -42,19 +66,20 @@ export default function Home() {
           <button type="button" onClick={handlePrevDays}>
             <MdChevronLeft size={25} color="#5c37b8" />
           </button>
-          <strong> 15/01/2018 </strong>
+          <strong> {dateFormated} </strong>
           <button type="button" onClick={handleNextDays}>
             <MdChevronRight size={25} color="#5c37b8" />
           </button>
         </header>
       </Content>
 
-      <ul>
-        <li></li>
-        <li> </li>
-        <li></li>
-        <li></li>
-      </ul>
+      {listAppointments.length > 0 && (
+        <ul>
+          {listAppointments.map(item => (
+            <li></li>
+          ))}
+        </ul>
+      )}
     </Container>
   );
 }

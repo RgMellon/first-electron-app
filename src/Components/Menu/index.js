@@ -1,10 +1,22 @@
 import React from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import Notification from '../../Components/Notification';
 
 import { Container, WrapperMenu, MenuLeft, MenuRight } from './styles';
 
+import { signOut } from '../../store/modules/auth/actions';
+
+import { MdExitToApp } from 'react-icons/md';
+
 export default function Menu() {
+  const dispatch = useDispatch();
+
+  function handleSignOut() {
+    dispatch(signOut());
+  }
+
   return (
     <Container>
       <WrapperMenu>
@@ -12,6 +24,10 @@ export default function Menu() {
 
         <MenuRight>
           <Notification />
+
+          <button onClick={handleSignOut}>
+            <MdExitToApp color="#5c37b8" size="20" />
+          </button>
         </MenuRight>
       </WrapperMenu>
     </Container>

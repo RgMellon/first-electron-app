@@ -12,6 +12,7 @@ export default function user(state = INITIAL_STATE, action) {
         const userProfile = {
           name: action.payload.user.name,
           email: action.payload.user.email,
+          id: action.payload.user.id,
         };
         draft.profile = userProfile;
         break;

@@ -36,6 +36,9 @@ export const MenuRight = styled.div`
     justify-content: center;
     align-items: center;
 
+    &:hover {
+      background: #d6d6d6};
+    }
     svg {
       /* &:hover {
         color: blue;
